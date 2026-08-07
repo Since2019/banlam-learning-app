@@ -101,7 +101,7 @@ button { color: inherit; }
 .section-heading p { font-size: .62rem; letter-spacing: .28em; color: var(--coral); font-weight: 800; margin: 0 0 8px; }
 .section-heading h2 { margin: 0; font-family: Georgia, "STSong", serif; font-size: 1.8rem; font-weight: 600; }
 .section-heading a { color: var(--teal); font-size: .76rem; font-weight: 700; text-decoration: none; }
-.path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.path-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .path-card { min-height: 228px; padding: 24px; position: relative; border: 1px solid rgba(23,60,57,.12); background: rgba(255,253,248,.72); border-radius: 8px 24px 24px 24px; }
 .active-card { background: var(--ink); color: white; box-shadow: 0 15px 40px rgba(23,60,57,.13); }
 .path-number { position: absolute; right: 20px; top: 18px; font-family: Georgia; font-size: 2.2rem; opacity: .11; }
@@ -109,6 +109,7 @@ button { color: inherit; }
 .active-card .path-icon { background: #f0d5c5; color: var(--coral); }
 .path-icon.coral { background: #f3d9d0; color: #b74c37; }
 .path-icon.gold { background: #efe4ba; color: #8c6a21; }
+.path-icon.sky { background: #dce9ed; color: #3c7685; }
 .path-card h3 { margin: 20px 0 7px; font-family: Georgia, "STSong", serif; font-size: 1.2rem; }
 .path-card p { margin: 0; font-size: .74rem; opacity: .65; }
 .mini-progress { height: 4px; background: rgba(47,113,104,.14); border-radius: 999px; margin: 24px 0 8px; overflow: hidden; }
@@ -117,6 +118,45 @@ button { color: inherit; }
 .path-card small { font-size: .66rem; opacity: .6; }
 .locked { opacity: .72; }
 .lock-copy { display: inline-block; margin-top: 27px; padding: 7px 10px; background: rgba(23,60,57,.07); border-radius: 999px; font-size: .64rem; }
+.travel-path-card { border-color: rgba(47,113,104,.3); background: #edf4f0; }
+.path-start { display: inline-flex; align-items: center; gap: 22px; margin-top: 25px; color: var(--teal); font-size: .7rem; font-weight: 800; text-decoration: none; }
+
+.travel-unit { width: min(1120px, calc(100% - 40px)); margin: 0 auto 100px; padding: 48px; border-radius: 36px 36px 36px 10px; background: var(--ink); color: white; position: relative; z-index: 1; box-shadow: 0 26px 70px rgba(23,60,57,.16); }
+.travel-intro { display: flex; align-items: end; justify-content: space-between; gap: 30px; padding-bottom: 34px; border-bottom: 1px solid rgba(255,255,255,.14); }
+.unit-kicker { margin: 0 0 10px !important; color: #f2aa97 !important; font-size: .64rem !important; font-weight: 800; letter-spacing: .2em; }
+.travel-intro h2 { margin: 0 0 10px; font: 600 2.4rem Georgia, "STSong", serif; }
+.travel-intro p { margin: 0; color: rgba(255,255,255,.62); font-size: .78rem; }
+.unit-stats { display: flex; gap: 28px; }
+.unit-stats span { color: rgba(255,255,255,.55); font-size: .65rem; white-space: nowrap; }
+.unit-stats b { display: block; color: white; font: 500 1.5rem Georgia, serif; margin-bottom: 3px; }
+.travel-course { display: grid; grid-template-columns: 300px 1fr; gap: 38px; padding-top: 36px; }
+.travel-tabs { display: flex; flex-direction: column; gap: 9px; }
+.travel-tab { width: 100%; display: grid; grid-template-columns: 40px 1fr 18px; gap: 12px; align-items: center; padding: 13px; border: 1px solid transparent; border-radius: 15px; background: transparent; color: white; cursor: pointer; text-align: left; transition: .2s; }
+.travel-tab:hover { background: rgba(255,255,255,.06); }
+.travel-tab.active { background: var(--paper); color: var(--ink); box-shadow: 0 10px 25px rgba(0,0,0,.14); }
+.travel-tab-icon { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 12px 12px 12px 3px; background: rgba(255,255,255,.1); color: #f2aa97; font: 700 .8rem Georgia, serif; }
+.travel-tab.active .travel-tab-icon { background: #e5efea; color: var(--teal); }
+.travel-tab small, .travel-tab b, .travel-tab em { display: block; }
+.travel-tab small { margin-bottom: 2px; color: inherit; opacity: .45; font-size: .55rem; font-weight: 700; letter-spacing: .08em; }
+.travel-tab b { font-size: .78rem; }
+.travel-tab em { margin-top: 3px; opacity: .55; font-size: .6rem; font-style: normal; }
+.travel-tab i { font-style: normal; opacity: .35; }
+.travel-lesson-panel { min-width: 0; padding: 28px; border-radius: 24px 24px 24px 7px; background: var(--paper); color: var(--ink); }
+.travel-lesson-heading { display: flex; align-items: start; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.travel-lesson-heading span { color: var(--coral); font-size: .6rem; font-weight: 800; letter-spacing: .12em; }
+.travel-lesson-heading h3 { margin: 7px 0 5px; font: 600 1.55rem Georgia, "STSong", serif; }
+.travel-lesson-heading p { margin: 0; color: var(--ink-soft); font-size: .66rem; }
+.lesson-count { padding: 7px 10px; border-radius: 999px; background: #f4e3dd; letter-spacing: 0 !important; }
+.phrase-list { display: grid; }
+.travel-phrase { display: grid; grid-template-columns: 34px 1fr 38px; gap: 13px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.phrase-index { color: var(--coral); font: 500 .72rem Georgia, serif; }
+.travel-phrase h4 { margin: 0 0 5px; font: 600 1.05rem Georgia, "STKaiti", serif; }
+.travel-phrase p { margin: 0 0 4px; color: var(--teal); font: italic 700 .67rem Georgia, serif; letter-spacing: .02em; }
+.travel-phrase small { color: var(--ink-soft); font-size: .62rem; }
+.phrase-audio { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #e6efea; color: var(--teal); font-size: .58rem; cursor: pointer; }
+.phrase-audio:hover, .phrase-audio.playing { background: var(--teal); color: white; }
+.lesson-tip { margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: #f4eee3; color: var(--ink-soft); font-size: .62rem; line-height: 1.7; }
+.lesson-tip span { margin-right: 8px; color: var(--coral); font-weight: 800; }
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: flex-end; background: rgba(15,38,36,.52); backdrop-filter: blur(7px); animation: fade-in .18s ease both; }
 .settings-panel { width: min(510px, 100%); height: 100%; overflow-y: auto; background: var(--paper); padding: 38px 40px 28px; box-shadow: -25px 0 80px rgba(15,38,36,.22); animation: slide-in .26s cubic-bezier(.2,.8,.2,1) both; }
@@ -164,7 +204,8 @@ button { color: inherit; }
   .hero-copy { max-width: 620px; }
   .lesson-card { max-width: 540px; width: 100%; justify-self: center; }
   .path-grid { grid-template-columns: 1fr 1fr; }
-  .path-card:last-child { grid-column: 1 / -1; }
+  .travel-course { grid-template-columns: 1fr; }
+  .travel-tabs { display: grid; grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 560px) {
@@ -182,7 +223,12 @@ button { color: inherit; }
   .section-heading { align-items: start; }
   .section-heading a { margin-top: 7px; }
   .path-grid { grid-template-columns: 1fr; }
-  .path-card:last-child { grid-column: auto; }
+  .travel-unit { width: min(100% - 28px, 1120px); padding: 28px 20px; margin-bottom: 70px; }
+  .travel-intro { align-items: start; flex-direction: column; }
+  .unit-stats { width: 100%; justify-content: space-between; gap: 10px; }
+  .travel-tabs { grid-template-columns: 1fr; }
+  .travel-lesson-panel { padding: 22px 18px; }
+  .travel-phrase { grid-template-columns: 26px 1fr 34px; gap: 9px; }
   .settings-panel { padding: 30px 22px 24px; }
 }
 

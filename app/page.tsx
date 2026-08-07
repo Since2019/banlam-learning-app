@@ -25,11 +25,78 @@ const accentSamples: Record<Accent, { romanization: string; hint: string }> = {
   台湾腔: { romanization: "Lí hó!", hint: "台湾通行的台语腔调" },
 };
 
+type TravelLesson = {
+  id: string;
+  number: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+  duration: string;
+  phrases: Array<{ chinese: string; romanization: string; meaning: string }>;
+};
+
+const travelLessons: TravelLesson[] = [
+  {
+    id: "transport",
+    number: "01",
+    title: "问路搭车",
+    subtitle: "车站、方向与车票",
+    icon: "车",
+    duration: "8 分钟",
+    phrases: [
+      { chinese: "车头伫佗位？", romanization: "Chhia-thâu tī tó-uī?", meaning: "车站在哪里？" },
+      { chinese: "这班车有到机场无？", romanization: "Chit pan chhia ū kàu ki-tiûⁿ bô?", meaning: "这班车到机场吗？" },
+      { chinese: "一张票偌济钱？", romanization: "Chi̍t tiuⁿ phiò gōa-chē chîⁿ?", meaning: "一张票多少钱？" },
+    ],
+  },
+  {
+    id: "hotel",
+    number: "02",
+    title: "酒店入住",
+    subtitle: "订房、入住与需求",
+    icon: "宿",
+    duration: "7 分钟",
+    phrases: [
+      { chinese: "我有订房间。", romanization: "Góa ū tēng pâng-keng.", meaning: "我预订了房间。" },
+      { chinese: "敢会使较早入住？", romanization: "Kám ē-sái khah chá ji̍p-chū?", meaning: "可以提前入住吗？" },
+      { chinese: "劳力，欲一领被单。", romanization: "Ló͘-la̍t, beh chi̍t niá phōe-toaⁿ.", meaning: "谢谢，我想要一床被单。" },
+    ],
+  },
+  {
+    id: "sightseeing",
+    number: "03",
+    title: "景点游览",
+    subtitle: "买票、拍照与推荐",
+    icon: "游",
+    duration: "9 分钟",
+    phrases: [
+      { chinese: "这搭有啥物好𨑨迌？", romanization: "Chit-tah ū siánn-mih hó chhit-thô?", meaning: "这里有什么好玩的？" },
+      { chinese: "会使共我翕相无？", romanization: "Ē-sái kā góa hip-siòng bô?", meaning: "可以帮我拍照吗？" },
+      { chinese: "门票欲去佗位买？", romanization: "Mn̂g-phiò beh khì tó-uī bé?", meaning: "门票要去哪里买？" },
+    ],
+  },
+  {
+    id: "help",
+    number: "04",
+    title: "应急求助",
+    subtitle: "迷路、遗失与身体不适",
+    icon: "助",
+    duration: "6 分钟",
+    phrases: [
+      { chinese: "歹势，我揣无路。", romanization: "Pháinn-sè, góa chhōe-bô lō͘.", meaning: "不好意思，我迷路了。" },
+      { chinese: "我的物件毋见去。", romanization: "Góa ê mi̍h-kiāⁿ m̄-kìⁿ-khì.", meaning: "我的东西丢了。" },
+      { chinese: "我身躯无爽快。", romanization: "Góa seng-khu bô sóng-khoài.", meaning: "我身体不舒服。" },
+    ],
+  },
+];
+
 export default function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [preferences, setPreferences] = useState<Preferences>(defaultPreferences);
   const [playing, setPlaying] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [activeTravelLesson, setActiveTravelLesson] = useState(travelLessons[0].id);
+  const [playingPhrase, setPlayingPhrase] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("banlam-preferences");
@@ -89,7 +156,21 @@ export default function Home() {
     window.speechSynthesis.speak(utterance);
   };
 
+  const playTravelPhrase = (phrase: TravelLesson["phrases"][number]) => {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(phrase.meaning);
+    utterance.lang = preferences.accent === "台湾腔" ? "zh-TW" : "zh-CN";
+    utterance.volume = preferences.volume / 100;
+    utterance.rate = 0.72;
+    utterance.onstart = () => setPlayingPhrase(phrase.chinese);
+    utterance.onend = () => setPlayingPhrase(null);
+    utterance.onerror = () => setPlayingPhrase(null);
+    window.speechSynthesis.speak(utterance);
+  };
+
   const sample = accentSamples[preferences.accent];
+  const selectedTravelLesson = travelLessons.find((lesson) => lesson.id === activeTravelLesson) ?? travelLessons[0];
 
   return (
     <main className="app-shell">
@@ -130,7 +211,7 @@ export default function Home() {
             每天十分钟，听懂厝边人的问候。<br />跟着真实语境，学会地道表达。
           </p>
           <div className="hero-actions">
-            <button className="primary-button" type="button">
+            <button className="primary-button" type="button" onClick={() => document.querySelector("#travel-unit")?.scrollIntoView({ behavior: "smooth" })}>
               继续学习 <span>→</span>
             </button>
             <span className="progress-copy">本周已完成 <b>4/7</b> 课</span>
@@ -194,6 +275,76 @@ export default function Home() {
             <h3>出门行路</h3>
             <p>问路、搭车与闲逛</p>
             <span className="lock-copy">再完成 2 课解锁</span>
+          </article>
+          <article className="path-card travel-path-card">
+            <span className="path-number">04</span>
+            <div className="path-icon sky">旅</div>
+            <h3>旅行出游</h3>
+            <p>交通、住宿、游览与求助</p>
+            <a className="path-start" href="#travel-unit">开始学习 <span>→</span></a>
+          </article>
+        </div>
+      </section>
+
+      <section className="travel-unit" id="travel-unit" aria-labelledby="travel-title">
+        <div className="travel-intro">
+          <div>
+            <p className="unit-kicker">NEW UNIT · 单元 04</p>
+            <h2 id="travel-title">旅行出游</h2>
+            <p>从抵达到返程，带着 12 句实用闽南语安心出发。</p>
+          </div>
+          <div className="unit-stats" aria-label="课程信息">
+            <span><b>4</b> 个场景</span>
+            <span><b>12</b> 句表达</span>
+            <span><b>30</b> 分钟</span>
+          </div>
+        </div>
+
+        <div className="travel-course">
+          <nav className="travel-tabs" aria-label="旅行课程场景">
+            {travelLessons.map((lesson) => (
+              <button
+                key={lesson.id}
+                type="button"
+                className={lesson.id === selectedTravelLesson.id ? "travel-tab active" : "travel-tab"}
+                aria-current={lesson.id === selectedTravelLesson.id ? "step" : undefined}
+                onClick={() => setActiveTravelLesson(lesson.id)}
+              >
+                <span className="travel-tab-icon">{lesson.icon}</span>
+                <span><small>场景 {lesson.number}</small><b>{lesson.title}</b><em>{lesson.subtitle}</em></span>
+                <i>→</i>
+              </button>
+            ))}
+          </nav>
+
+          <article className="travel-lesson-panel">
+            <div className="travel-lesson-heading">
+              <div>
+                <span>场景 {selectedTravelLesson.number}</span>
+                <h3>{selectedTravelLesson.title}</h3>
+                <p>{selectedTravelLesson.subtitle} · {selectedTravelLesson.duration}</p>
+              </div>
+              <span className="lesson-count">3 句</span>
+            </div>
+            <div className="phrase-list">
+              {selectedTravelLesson.phrases.map((phrase, index) => (
+                <div className="travel-phrase" key={phrase.chinese}>
+                  <span className="phrase-index">{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h4>{phrase.chinese}</h4>
+                    <p>{phrase.romanization}</p>
+                    <small>{phrase.meaning}</small>
+                  </div>
+                  <button
+                    type="button"
+                    className={playingPhrase === phrase.chinese ? "phrase-audio playing" : "phrase-audio"}
+                    onClick={() => playTravelPhrase(phrase)}
+                    aria-label={`播放${phrase.chinese}的发音`}
+                  >{playingPhrase === phrase.chinese ? "■" : "▶"}</button>
+                </div>
+              ))}
+            </div>
+            <div className="lesson-tip"><span>厝边提示</span> 问路前先说「歹势」（不好意思），听起来更自然也更有礼貌。</div>
           </article>
         </div>
       </section>
